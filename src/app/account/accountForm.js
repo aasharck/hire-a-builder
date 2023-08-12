@@ -14,7 +14,7 @@ export default function AccountForm({ session }) {
   const getProfile = useCallback(async () => {
     try {
       setLoading(true)
-
+      console.log(user?.id)
       let { data, error, status } = await supabase
         .from('profiles')
         .select(`full_name, username, website, avatar_url`)
@@ -32,6 +32,7 @@ export default function AccountForm({ session }) {
         setAvatarUrl(data.avatar_url)
       }
     } catch (error) {
+      console.log(error)
       alert('Error loading user data!')
     } finally {
       setLoading(false)
