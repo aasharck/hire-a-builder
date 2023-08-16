@@ -8,6 +8,8 @@ export default function AccountForm({ session }) {
   const [fullname, setFullname] = useState(null)
   const [username, setUsername] = useState(null)
   const [website, setWebsite] = useState(null)
+  const [socials, setSocials] = useState(null)
+  const [alumni, setAlumni] = useState(null)
   const [avatar_url, setAvatarUrl] = useState(null)
   const user = session?.user
 
@@ -17,7 +19,7 @@ export default function AccountForm({ session }) {
       console.log(user?.id)
       let { data, error, status } = await supabase
         .from('profiles')
-        .select(`full_name, username, website, avatar_url`)
+        .select(`full_name, username, website, avatar_url, socials,buildspace_alumni`)
         .eq('id', user?.id)
         .single()
 
@@ -29,6 +31,8 @@ export default function AccountForm({ session }) {
         setFullname(data.full_name)
         setUsername(data.username)
         setWebsite(data.website)
+        setSocials(data.socials)
+        setAlumni(data.alumni)
         setAvatarUrl(data.avatar_url)
       }
     } catch (error) {
@@ -52,6 +56,8 @@ export default function AccountForm({ session }) {
         full_name: fullname,
         username,
         website,
+        socials,
+        buildspace_alumni: alumni,
         avatar_url,
         updated_at: new Date().toISOString(),
       })
@@ -99,9 +105,33 @@ export default function AccountForm({ session }) {
       </div>
 
       <div>
+        <label htmlFor="socials">Socials</label>
+        <input
+          id="socials"
+          type="text"
+          value={socials || ''}
+          onChange={(e) => setSocials(e.target.value)}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="alumni">Buildspace Alumni?</label>
+        <select id="alumni" onChange={(e) => setAlumni(e.target.value)}>
+          <option value={true}>Yes</option>
+          <option value={false}>No</option>
+        </select>
+          {/* <input
+            id="alumni"
+            type="url"
+            value={alumni || ''}
+            onChange={(e) => setAlumni(e.target.value)}
+          /> */}
+      </div>
+
+      <div>
         <button
           className="button primary block"
-          onClick={() => updateProfile({ fullname, username, website, avatar_url })}
+          onClick={() => updateProfile({ fullname, username, website, avatar_url, socials })}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update'}
