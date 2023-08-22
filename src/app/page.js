@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import AuthForm from '../components/authForm'
+import Navbar from '@/components/Navbar'
 
 export default function Home() {
 
@@ -35,6 +36,8 @@ export default function Home() {
   }, [getProfiles])
 
   return (
+    <div>
+      <Navbar />
     <div className="container mt-10">
       <h1 className='fs-1'>Hire a Builder</h1>
       {profiles.map((profile, i) => (
@@ -44,6 +47,7 @@ export default function Home() {
         </div>
       ))}
       
+    </div>
     </div>
   )
 }
